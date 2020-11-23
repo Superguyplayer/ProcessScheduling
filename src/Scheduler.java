@@ -5,7 +5,7 @@ public class Scheduler {
     public static void PriorityQueuing(ArrayList<MProcess> MProcesses, boolean withInterruption) {
         int time = 0;
         boolean finished = false;
-        int stepSize = 2;
+        int stepSize = 1;
         MProcess lastProcess = null;
 
         ArrayList<MProcess> activeProcesses = new ArrayList<>();
@@ -39,7 +39,8 @@ public class Scheduler {
                 break;
 
             }
-            // wichtigsten Prozes finden
+
+            // wichtigsten Prozess finden
             int indexOfMostPrio = -1;
 
             for (int i = 0; i < activeProcesses.size(); i++) {
@@ -52,16 +53,25 @@ public class Scheduler {
 
             //Prozess "bearbeiten"
 
+            System.out.print("Processes in Queue: ");
+            for(MProcess process: activeProcesses) {
+                System.out.print(process.getName() + ", ");
+            }
+
             if (withInterruption) {
                 activeProcesses.get(indexOfMostPrio).lowerDurationBy(stepSize);
-                System.out.println("Time: " + time + "ms, aktiver Prozess:");
-                System.out.println("\t" + activeProcesses.get(indexOfMostPrio).getName() + ", Time left: " + activeProcesses.get(indexOfMostPrio).getDurationLeft() + "ms\tPrio: " + activeProcesses.get(indexOfMostPrio).getPriority());
+
+                //Ausgabe
+                System.out.print("\nTime: " + time + "ms, active process:");
+                System.out.println(activeProcesses.get(indexOfMostPrio).getName() + ", Time left: " + activeProcesses.get(indexOfMostPrio).getDurationLeft() + "ms\tPrio: " + activeProcesses.get(indexOfMostPrio).getPriority() + "\n");
             } else {
 
                 if (activeProcesses.contains(lastProcess)) {
                     lastProcess.lowerDurationBy(stepSize);
-                    System.out.println("Time: " + time + "ms, aktiver Prozess:");
-                    System.out.println("\t" + lastProcess.getName() + ", Time left: " + lastProcess.getDurationLeft() + "ms\tPrio: " + lastProcess.getPriority());
+
+                    //Ausgabe
+                    System.out.print("\nTime: " + time + "ms, active process:");
+                    System.out.println(lastProcess.getName() + ", Time left: " + lastProcess.getDurationLeft() + "ms\tPrio: " + lastProcess.getPriority() + "\n");
                 } else {
 
                     activeProcesses.get(indexOfMostPrio).lowerDurationBy(stepSize);
@@ -70,8 +80,6 @@ public class Scheduler {
 
                 }
             }
-
-
 
             //Die Zeit läuft
             time = time + stepSize;

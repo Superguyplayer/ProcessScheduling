@@ -14,8 +14,9 @@ public class Main {
         Scheduler.FCFS(MProcesses);
         System.out.println("\n\n\nShortest Job First\n");
         Initialize(MProcesses);
-        Scheduler.ShortestJobFirst(MProcesses);
-        System.out.println("\n\n\nPQ with Interruptions\n");  */
+        Scheduler.ShortestJobFirst(MProcesses); */
+
+        System.out.println("\n\n\nPQ with Interruptions\n");
         Initialize(MProcesses);
         Scheduler.PriorityQueuing(MProcesses, true);
         System.out.println("\n\n\nPQ without Interruptions\n");
