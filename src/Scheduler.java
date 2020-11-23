@@ -54,10 +54,14 @@ public class Scheduler {
 
             if (withInterruption) {
                 activeProcesses.get(indexOfMostPrio).lowerDurationBy(stepSize);
+                System.out.println("Time: " + time + "ms, aktiver Prozess:");
+                System.out.println("\t" + activeProcesses.get(indexOfMostPrio).getName() + ", Time left: " + activeProcesses.get(indexOfMostPrio).getDurationLeft() + "ms\tPrio: " + activeProcesses.get(indexOfMostPrio).getPriority());
             } else {
 
                 if (activeProcesses.contains(lastProcess)) {
                     lastProcess.lowerDurationBy(stepSize);
+                    System.out.println("Time: " + time + "ms, aktiver Prozess:");
+                    System.out.println("\t" + lastProcess.getName() + ", Time left: " + lastProcess.getDurationLeft() + "ms\tPrio: " + lastProcess.getPriority());
                 } else {
 
                     activeProcesses.get(indexOfMostPrio).lowerDurationBy(stepSize);
@@ -67,14 +71,8 @@ public class Scheduler {
                 }
             }
 
-            //Ausgabe
-            /*
-            System.out.println("Time: " + time + "ms");
-            for (MProcess process : activeProcesses) {
-                System.out.println("\t" + process.getName() + ", Time left: " + process.getDurationLeft() + "ms\tPrio: " + process.getPriority());
-            }
 
-*/
+
             //Die Zeit läuft
             time = time + stepSize;
 
