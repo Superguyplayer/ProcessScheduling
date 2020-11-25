@@ -1,3 +1,5 @@
+
+
 import java.util.ArrayList;
 
 public class Main {
@@ -24,7 +26,6 @@ public class Main {
         Scheduler.PriorityQueuing(MProcesses, false);
 
         */
-
 
     }
 
