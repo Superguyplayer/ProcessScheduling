@@ -8,12 +8,15 @@ public class Main {
 
         ArrayList<MProcess> MProcesses = new ArrayList<>();
 
-        /*Initialize(MProcesses);
+
         System.out.println("RoundRobin\n");
+        Initialize(MProcesses);
         Scheduler.RoundRobin(MProcesses);
+
         System.out.println("\n\n\nFCFS\n");
         Initialize(MProcesses);
         Scheduler.FCFS(MProcesses);
+
         System.out.println("\n\n\nShortest Job First\n");
         Initialize(MProcesses);
         Scheduler.ShortestJobFirst(MProcesses);
@@ -21,11 +24,11 @@ public class Main {
         System.out.println("\n\n\nPQ with Interruptions\n");
         Initialize(MProcesses);
         Scheduler.PriorityQueuing(MProcesses, true);
+
         System.out.println("\n\n\nPQ without Interruptions\n");
         Initialize(MProcesses);
         Scheduler.PriorityQueuing(MProcesses, false);
 
-        */
 
     }
 
