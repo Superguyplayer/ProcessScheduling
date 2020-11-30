@@ -5,7 +5,7 @@ public class Scheduler {
     public static void PriorityQueuing(ArrayList<MProcess> MProcesses, boolean withInterruption) {
         int time = 0;
         boolean finished = false;
-        int stepSize = 1;
+        int stepSize = 2;
         MProcess lastProcess = null;
 
         ArrayList<MProcess> activeProcesses = new ArrayList<>();
@@ -53,25 +53,27 @@ public class Scheduler {
 
             //Prozess "bearbeiten"
 
+            /*
             System.out.print("Processes in Queue: ");
             for(MProcess process: activeProcesses) {
                 System.out.print(process.getName() + ", ");
-            }
+            }*/
 
             if (withInterruption) {
                 activeProcesses.get(indexOfMostPrio).lowerDurationBy(stepSize);
 
-                //Ausgabe
-                System.out.print("\nTime: " + time + "ms, active process:");
-                System.out.println(activeProcesses.get(indexOfMostPrio).getName() + ", Time left: " + activeProcesses.get(indexOfMostPrio).getDurationLeft() + "ms\tPrio: " + activeProcesses.get(indexOfMostPrio).getPriority() + "\n");
+
+                //erweiterte Ausgabe
+                //System.out.print("\nTime: " + time + "ms, active process:");
+                //System.out.println(activeProcesses.get(indexOfMostPrio).getName() + ", Time left: " + activeProcesses.get(indexOfMostPrio).getDurationLeft() + "ms\tPrio: " + activeProcesses.get(indexOfMostPrio).getPriority() + "\n");
             } else {
 
                 if (activeProcesses.contains(lastProcess)) {
                     lastProcess.lowerDurationBy(stepSize);
 
                     //Ausgabe
-                    System.out.print("\nTime: " + time + "ms, active process:");
-                    System.out.println(lastProcess.getName() + ", Time left: " + lastProcess.getDurationLeft() + "ms\tPrio: " + lastProcess.getPriority() + "\n");
+                    //System.out.print("\nTime: " + time + "ms, active process:");
+                    //System.out.println(lastProcess.getName() + ", Time left: " + lastProcess.getDurationLeft() + "ms\tPrio: " + lastProcess.getPriority() + "\n");
                 } else {
 
                     activeProcesses.get(indexOfMostPrio).lowerDurationBy(stepSize);
@@ -79,7 +81,11 @@ public class Scheduler {
                     lastProcess = activeProcesses.get(indexOfMostPrio);
 
                 }
+
+
             }
+
+
 
             //Die Zeit läuft
             time = time + stepSize;
@@ -87,7 +93,6 @@ public class Scheduler {
 
         }
     }
-
 
     public static void ShortestJobFirst(ArrayList<MProcess> MProcesses) {
         int time = 0;
@@ -100,24 +105,7 @@ public class Scheduler {
         while (!finished) { //WOW
 
             //sind neue Prozesse aktiv?
-            for (MProcess process : MProcesses) {
-                if (!activeProcesses.contains(process)) {
-                    if (process.getStart() <= time && !process.isFinished()) {
-                        activeProcesses.add(process);
-                        System.out.println("Process " + process.getName() + " is now in Queue at Time " + time + " with a duration of " + process.getDuration());
-                    }
-
-                }
-
-                //sind fertige Prozesse in der aktiven Liste
-                if (activeProcesses.contains(process) && process.getDurationLeft() <= 0) {
-                    process.setFinished(true);
-                    activeProcesses.remove(process);
-                    System.out.println(process.getName() + " finished at Time: " + time + "\n\tIt took " + (time - process.getStart()) + " ms");
-                }
-
-
-            }
+            updateProcesses(MProcesses, time, activeProcesses);
 
             //sind wir fertig?
             if (activeProcesses.isEmpty()) {
@@ -163,7 +151,6 @@ public class Scheduler {
 
     }
 
-
     public static void FCFS(ArrayList<MProcess> MProcesses) {
         int time = 0;
         int index = 0;
@@ -175,24 +162,7 @@ public class Scheduler {
         while (!finished) { //WOW
 
             //sind neue Prozesse aktiv?
-            for (MProcess process : MProcesses) {
-                if (!activeProcesses.contains(process)) {
-                    if (process.getStart() <= time && !process.isFinished()) {
-                        activeProcesses.add(process);
-                        System.out.println("Process " + process.getName() + " is now in Queue at Time " + time + " with a duration of " + process.getDuration());
-                    }
-
-                }
-
-                //sind fertige Prozesse in der aktiven Liste
-                if (activeProcesses.contains(process) && process.getDurationLeft() <= 0) {
-                    process.setFinished(true);
-                    activeProcesses.remove(process);
-                    System.out.println(process.getName() + " finished at Time: " + time + "\n\tIt took " + (time - process.getStart()) + " ms");
-                }
-
-
-            }
+            updateProcesses(MProcesses, time, activeProcesses);
 
 
             //sind wir fertig?
@@ -234,24 +204,7 @@ public class Scheduler {
         while (!finished) { //WOW
 
             //sind neue Prozesse aktiv?
-            for (MProcess process : MProcesses) {
-                if (!activeProcesses.contains(process)) {
-                    if (process.getStart() <= time && !process.isFinished()) {
-                        activeProcesses.add(process);
-                        System.out.println("Process " + process.getName() + " is now in Queue at Time " + time + " with a duration of " + process.getDuration());
-                    }
-
-                }
-
-                //sind fertige Prozesse in der aktiven Liste
-                if (activeProcesses.contains(process) && process.getDurationLeft() <= 0) {
-                    process.setFinished(true);
-                    activeProcesses.remove(process);
-                    System.out.println(process.getName() + " finished at Time: " + time + "\n\tIt took " + (time - process.getStart()) + " ms");
-                }
-
-
-            }
+            updateProcesses(MProcesses, time, activeProcesses);
 
             //roundRobin....wieder nach vorne springen
             if (activeProcesses.size() <= index) {
@@ -286,6 +239,27 @@ public class Scheduler {
         }
 
 
+    }
+
+    private static void updateProcesses(ArrayList<MProcess> MProcesses, int time, ArrayList<MProcess> activeProcesses) {
+        for (MProcess process : MProcesses) {
+            if (!activeProcesses.contains(process)) {
+                if (process.getStart() <= time && !process.isFinished()) {
+                    activeProcesses.add(process);
+                    System.out.println("Process " + process.getName() + " is now in Queue at Time " + time + " with a duration of " + process.getDuration());
+                }
+
+            }
+
+            //sind fertige Prozesse in der aktiven Liste
+            if (activeProcesses.contains(process) && process.getDurationLeft() <= 0) {
+                process.setFinished(true);
+                activeProcesses.remove(process);
+                System.out.println(process.getName() + " finished at Time: " + time + "\n\tIt took " + (time - process.getStart()) + " ms");
+            }
+
+
+        }
     }
 
 
